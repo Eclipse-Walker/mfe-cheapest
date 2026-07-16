@@ -272,18 +272,17 @@ const App = () => {
               <section key={group.dim}>
                 <h2>{t.dims[group.dim]}</h2>
                 <ul className="item-list">
-                  {group.items.map((it, i) => {
+                  {group.items.map((it) => {
                     const per = unitPrice(it.price, it.qty, it.unit);
                     const pctMore = ((per - best) / best) * 100;
+                    // ponytail: เทียบตามค่าที่ปัดแล้วเห็นเท่ากัน ไม่ใช่ index แรกของ sort — กันกรณีราคาเท่ากันแต่ badge ลงผิดตัว
+                    const isBest = Math.round(pctMore) <= 0;
                     return (
-                      <li
-                        key={it.id}
-                        className={i === 0 ? 'item best' : 'item'}
-                      >
+                      <li key={it.id} className={isBest ? 'item best' : 'item'}>
                         <div className="item-main">
                           <span className="item-name">
                             {it.name}
-                            {i === 0 && group.items.length > 1 && (
+                            {isBest && group.items.length > 1 && (
                               <span className="badge">{t.best}</span>
                             )}
                           </span>
@@ -295,7 +294,7 @@ const App = () => {
                           <span className="per-unit">
                             {formatUnitPrice(per, group.dim, lang)}
                           </span>
-                          {i > 0 && (
+                          {!isBest && (
                             <span className="pct-more">
                               {t.moreExpensive(pctMore.toFixed(0))}
                             </span>
