@@ -228,6 +228,7 @@ const App = () => {
               <input
                 name="price"
                 type="number"
+                inputMode="decimal"
                 placeholder={t.pricePlaceholder}
                 required
                 min="0.01"
@@ -236,6 +237,7 @@ const App = () => {
               <input
                 name="qty"
                 type="number"
+                inputMode="decimal"
                 placeholder={t.qtyPlaceholder}
                 required
                 min="0.001"
