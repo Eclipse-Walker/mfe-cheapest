@@ -8,6 +8,10 @@ export default defineConfig({
       reactCompiler: true,
     }),
   ],
+  output: {
+    // relative path เพื่อให้ deploy ใต้ subpath ได้ (GitHub Pages: /mfe-cheapest/)
+    assetPrefix: './',
+  },
   html: {
     title: 'Cheapest?',
     meta: {
@@ -19,11 +23,11 @@ export default defineConfig({
     tags: [
       {
         tag: 'link',
-        attrs: { rel: 'manifest', href: '/manifest.webmanifest' },
+        attrs: { rel: 'manifest', href: 'manifest.webmanifest' },
       },
       {
         tag: 'link',
-        attrs: { rel: 'apple-touch-icon', href: '/icon-192.png' },
+        attrs: { rel: 'apple-touch-icon', href: 'icon-192.png' },
       },
     ],
   },

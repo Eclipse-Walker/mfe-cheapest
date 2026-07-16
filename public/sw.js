@@ -29,7 +29,7 @@ self.addEventListener('fetch', (e) => {
         return fresh;
       } catch {
         const cached = await cache.match(request);
-        return cached ?? (await cache.match('/')) ?? Response.error();
+        return cached ?? (await cache.match('./')) ?? Response.error();
       }
     }),
   );
