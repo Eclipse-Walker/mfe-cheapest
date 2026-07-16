@@ -12,6 +12,9 @@ type Item = {
 };
 
 const STORAGE_KEY = 'items';
+const THEME_KEY = 'theme';
+
+type Theme = 'light' | 'dark';
 
 const load = (): Item[] => {
   try {
@@ -21,9 +24,16 @@ const load = (): Item[] => {
   }
 };
 
+const loadTheme = (): Theme => {
+  const saved = localStorage.getItem(THEME_KEY);
+  if (saved === 'light' || saved === 'dark') return saved;
+  return matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+};
+
 const App = () => {
   const [items, setItems] = useState<Item[]>(load);
   const [lang, setLang] = useState<Lang>(loadLang);
+  const [theme, setTheme] = useState<Theme>(loadTheme);
   const t = MESSAGES[lang];
   const thb = new Intl.NumberFormat(t.locale, {
     style: 'currency',
@@ -37,6 +47,11 @@ const App = () => {
   useEffect(() => {
     localStorage.setItem(LANG_KEY, lang);
   }, [lang]);
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    localStorage.setItem(THEME_KEY, theme);
+  }, [theme]);
 
   const addItem = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -74,13 +89,23 @@ const App = () => {
     <div className="app">
       <div className="header">
         <h1>{t.title}</h1>
-        <button
-          type="button"
-          className="lang-toggle"
-          onClick={() => setLang(lang === 'th' ? 'en' : 'th')}
-        >
-          {lang === 'th' ? 'EN' : 'ไทย'}
-        </button>
+        <div className="header-actions">
+          <button
+            type="button"
+            className="theme-toggle"
+            aria-label={theme === 'light' ? 'dark mode' : 'light mode'}
+            onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+          >
+            {theme === 'light' ? '🌙' : '☀️'}
+          </button>
+          <button
+            type="button"
+            className="lang-toggle"
+            onClick={() => setLang(lang === 'th' ? 'en' : 'th')}
+          >
+            {lang === 'th' ? 'EN' : 'ไทย'}
+          </button>
+        </div>
       </div>
       <p className="subtitle">{t.subtitle}</p>
 
