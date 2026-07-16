@@ -138,7 +138,7 @@ const App = () => {
             className="lang-toggle"
             onClick={() => setLang(lang === 'th' ? 'en' : 'th')}
           >
-            {lang === 'th' ? 'EN' : 'ไทย'}
+            {lang === 'th' ? 'EN' : 'TH'}
           </button>
         </div>
       </div>
