@@ -1,12 +1,7 @@
 import { useEffect, useState } from 'react';
 import './App.css';
-import {
-  type Dimension,
-  formatUnitPrice,
-  UNITS,
-  type Unit,
-  unitPrice,
-} from './unitPrice';
+import { LANG_KEY, type Lang, loadLang, MESSAGES } from './i18n';
+import { formatUnitPrice, UNITS, type Unit, unitPrice } from './unitPrice';
 
 type Item = {
   id: string;
@@ -17,15 +12,6 @@ type Item = {
 };
 
 const STORAGE_KEY = 'items';
-const DIM_LABEL: Record<Dimension, string> = {
-  mass: 'ตามน้ำหนัก',
-  volume: 'ตามปริมาตร',
-  count: 'ตามจำนวนชิ้น',
-};
-const thb = new Intl.NumberFormat('th-TH', {
-  style: 'currency',
-  currency: 'THB',
-});
 
 const load = (): Item[] => {
   try {
@@ -37,17 +23,27 @@ const load = (): Item[] => {
 
 const App = () => {
   const [items, setItems] = useState<Item[]>(load);
+  const [lang, setLang] = useState<Lang>(loadLang);
+  const t = MESSAGES[lang];
+  const thb = new Intl.NumberFormat(t.locale, {
+    style: 'currency',
+    currency: 'THB',
+  });
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(items));
   }, [items]);
+
+  useEffect(() => {
+    localStorage.setItem(LANG_KEY, lang);
+  }, [lang]);
 
   const addItem = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
     // ponytail: ชื่อซ้ำได้หลังลบรายการ — ไม่เป็นไร ใช้ id เป็น key อยู่แล้ว
-    const autoName = `สินค้า #${items.length + 1}`;
+    const autoName = t.autoName(items.length + 1);
     setItems([
       ...items,
       {
@@ -76,15 +72,24 @@ const App = () => {
 
   return (
     <div className="app">
-      <h1>🛒 อันไหนถูกสุด?</h1>
-      <p className="subtitle">กรอกราคาและปริมาณ แล้วดูว่าชิ้นไหนคุ้มค่าที่สุด</p>
+      <div className="header">
+        <h1>{t.title}</h1>
+        <button
+          type="button"
+          className="lang-toggle"
+          onClick={() => setLang(lang === 'th' ? 'en' : 'th')}
+        >
+          {lang === 'th' ? 'EN' : 'ไทย'}
+        </button>
+      </div>
+      <p className="subtitle">{t.subtitle}</p>
 
       <form className="add-form" onSubmit={addItem}>
-        <input name="name" placeholder="ชื่อสินค้า (ไม่ใส่ก็ได้)" />
+        <input name="name" placeholder={t.namePlaceholder} />
         <input
           name="price"
           type="number"
-          placeholder="ราคา (บาท)"
+          placeholder={t.pricePlaceholder}
           required
           min="0.01"
           step="any"
@@ -92,24 +97,22 @@ const App = () => {
         <input
           name="qty"
           type="number"
-          placeholder="ปริมาณ"
+          placeholder={t.qtyPlaceholder}
           required
           min="0.001"
           step="any"
         />
         <select name="unit" defaultValue="g">
-          {Object.entries(UNITS).map(([key, u]) => (
+          {Object.keys(UNITS).map((key) => (
             <option key={key} value={key}>
-              {u.label}
+              {t.units[key as Unit]}
             </option>
           ))}
         </select>
-        <button type="submit">เพิ่ม</button>
+        <button type="submit">{t.add}</button>
       </form>
 
-      {items.length === 0 && (
-        <p className="empty">ยังไม่มีสินค้า — ลองเพิ่มสัก 2 ชิ้นเพื่อเปรียบเทียบ</p>
-      )}
+      {items.length === 0 && <p className="empty">{t.empty}</p>}
 
       {groups.map((group) => {
         const best = unitPrice(
@@ -119,7 +122,7 @@ const App = () => {
         );
         return (
           <section key={group.dim}>
-            <h2>{DIM_LABEL[group.dim]}</h2>
+            <h2>{t.dims[group.dim]}</h2>
             <ul className="item-list">
               {group.items.map((it, i) => {
                 const per = unitPrice(it.price, it.qty, it.unit);
@@ -130,27 +133,27 @@ const App = () => {
                       <span className="item-name">
                         {it.name}
                         {i === 0 && group.items.length > 1 && (
-                          <span className="badge">🏆 คุ้มสุด</span>
+                          <span className="badge">{t.best}</span>
                         )}
                       </span>
                       <span className="item-detail">
-                        {thb.format(it.price)} / {it.qty} {UNITS[it.unit].label}
+                        {thb.format(it.price)} / {it.qty} {t.units[it.unit]}
                       </span>
                     </div>
                     <div className="item-price">
                       <span className="per-unit">
-                        {formatUnitPrice(per, group.dim)}
+                        {formatUnitPrice(per, group.dim, lang)}
                       </span>
                       {i > 0 && (
                         <span className="pct-more">
-                          แพงกว่า {pctMore.toFixed(0)}%
+                          {t.moreExpensive(pctMore.toFixed(0))}
                         </span>
                       )}
                     </div>
                     <button
                       type="button"
                       className="delete"
-                      aria-label={`ลบ ${it.name}`}
+                      aria-label={t.deleteItem(it.name)}
                       onClick={() =>
                         setItems(items.filter((x) => x.id !== it.id))
                       }
@@ -171,7 +174,7 @@ const App = () => {
           className="clear-all"
           onClick={() => setItems([])}
         >
-          ล้างทั้งหมด
+          {t.clearAll}
         </button>
       )}
     </div>
