@@ -8,4 +8,23 @@ export default defineConfig({
       reactCompiler: true,
     }),
   ],
+  html: {
+    title: 'Cheapest?',
+    meta: {
+      viewport: 'width=device-width, initial-scale=1, viewport-fit=cover',
+      'theme-color': '#0d0d0d',
+      'apple-mobile-web-app-capable': 'yes',
+      'apple-mobile-web-app-status-bar-style': 'black-translucent',
+    },
+    tags: [
+      {
+        tag: 'link',
+        attrs: { rel: 'manifest', href: '/manifest.webmanifest' },
+      },
+      {
+        tag: 'link',
+        attrs: { rel: 'apple-touch-icon', href: '/icon-192.png' },
+      },
+    ],
+  },
 });
