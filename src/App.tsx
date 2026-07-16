@@ -335,6 +335,10 @@ const App = () => {
           )}
         </>
       )}
+
+      <footer className="footer">
+        {`/* Copyright © ${new Date().getFullYear()} Eclipse Walker All Rights Reserved */`}
+      </footer>
     </div>
   );
 };

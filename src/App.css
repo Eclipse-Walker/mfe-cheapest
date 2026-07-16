@@ -377,3 +377,11 @@ h2 {
   color: var(--text);
   border-color: var(--text);
 }
+
+.footer {
+  margin-top: 3rem;
+  text-align: center;
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  color: var(--muted);
+}
