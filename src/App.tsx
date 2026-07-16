@@ -46,11 +46,13 @@ const App = () => {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
+    // ponytail: ชื่อซ้ำได้หลังลบรายการ — ไม่เป็นไร ใช้ id เป็น key อยู่แล้ว
+    const autoName = `สินค้า #${items.length + 1}`;
     setItems([
       ...items,
       {
         id: crypto.randomUUID(),
-        name: String(data.get('name')),
+        name: String(data.get('name')).trim() || autoName,
         price: Number(data.get('price')),
         qty: Number(data.get('qty')),
         unit: data.get('unit') as Unit,
@@ -78,7 +80,7 @@ const App = () => {
       <p className="subtitle">กรอกราคาและปริมาณ แล้วดูว่าชิ้นไหนคุ้มค่าที่สุด</p>
 
       <form className="add-form" onSubmit={addItem}>
-        <input name="name" placeholder="ชื่อสินค้า" required />
+        <input name="name" placeholder="ชื่อสินค้า (ไม่ใส่ก็ได้)" />
         <input
           name="price"
           type="number"
