@@ -24,6 +24,38 @@ const load = (): Item[] => {
   }
 };
 
+const SunIcon = () => (
+  <svg
+    width="15"
+    height="15"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    aria-hidden="true"
+  >
+    <circle cx="12" cy="12" r="4" />
+    <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+  </svg>
+);
+
+const MoonIcon = () => (
+  <svg
+    width="15"
+    height="15"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    aria-hidden="true"
+  >
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+  </svg>
+);
+
 const loadTheme = (): Theme => {
   const saved = localStorage.getItem(THEME_KEY);
   if (saved === 'light' || saved === 'dark') return saved;
@@ -96,7 +128,7 @@ const App = () => {
             aria-label={theme === 'light' ? 'dark mode' : 'light mode'}
             onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
           >
-            {theme === 'light' ? '🌙' : '☀️'}
+            {theme === 'light' ? <MoonIcon /> : <SunIcon />}
           </button>
           <button
             type="button"
@@ -110,31 +142,41 @@ const App = () => {
       <p className="subtitle">{t.subtitle}</p>
 
       <form className="add-form" onSubmit={addItem}>
-        <input name="name" placeholder={t.namePlaceholder} />
-        <input
-          name="price"
-          type="number"
-          placeholder={t.pricePlaceholder}
-          required
-          min="0.01"
-          step="any"
-        />
-        <input
-          name="qty"
-          type="number"
-          placeholder={t.qtyPlaceholder}
-          required
-          min="0.001"
-          step="any"
-        />
-        <select name="unit" defaultValue="g">
-          {Object.keys(UNITS).map((key) => (
-            <option key={key} value={key}>
-              {t.units[key as Unit]}
-            </option>
-          ))}
-        </select>
-        <button type="submit">{t.add}</button>
+        <div className="form-fields">
+          <input name="name" placeholder={t.namePlaceholder} />
+          <input
+            name="price"
+            type="number"
+            placeholder={t.pricePlaceholder}
+            required
+            min="0.01"
+            step="any"
+          />
+          <input
+            name="qty"
+            type="number"
+            placeholder={t.qtyPlaceholder}
+            required
+            min="0.001"
+            step="any"
+          />
+        </div>
+        <div className="form-actions">
+          <div className="unit-picker">
+            {Object.keys(UNITS).map((key) => (
+              <label key={key} className="unit-option">
+                <input
+                  type="radio"
+                  name="unit"
+                  value={key}
+                  defaultChecked={key === 'g'}
+                />
+                <span>{t.units[key as Unit]}</span>
+              </label>
+            ))}
+          </div>
+          <button type="submit">{t.add}</button>
+        </div>
       </form>
 
       {items.length === 0 && <p className="empty">{t.empty}</p>}
@@ -183,7 +225,7 @@ const App = () => {
                         setItems(items.filter((x) => x.id !== it.id))
                       }
                     >
-                      ✕
+                      ×
                     </button>
                   </li>
                 );
