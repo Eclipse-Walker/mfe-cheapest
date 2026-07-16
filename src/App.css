@@ -139,7 +139,10 @@ h1 {
   flex-wrap: wrap;
 }
 
-.add-form input {
+.form-fields input {
+  /* grid item หดต่ำกว่า intrinsic width ของ input ได้ ไม่งั้นคอลัมน์ระเบิดออกนอกการ์ด */
+  min-width: 0;
+  width: 100%;
   min-height: 2.75rem;
   padding: 0.6rem 0.8rem;
   border: 1px solid var(--border);
@@ -152,11 +155,11 @@ h1 {
   transition: border-color 0.15s ease;
 }
 
-.add-form input::placeholder {
+.form-fields input::placeholder {
   color: var(--muted);
 }
 
-.add-form input:focus {
+.form-fields input:focus {
   outline: none;
   border-color: var(--text);
 }
