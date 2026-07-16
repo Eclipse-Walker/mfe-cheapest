@@ -184,8 +184,9 @@ h1 {
 .unit-option span {
   display: inline-flex;
   align-items: center;
-  min-height: 2.25rem;
-  padding: 0.35rem 0.8rem;
+  justify-content: center;
+  width: 3.25rem;
+  height: 2.25rem;
   border-radius: 999px;
   font-size: 0.85rem;
   color: var(--muted);
