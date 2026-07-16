@@ -12,9 +12,31 @@ body {
   padding: 2rem 1rem 4rem;
 }
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
 h1 {
   font-size: 2rem;
   margin-bottom: 0.25rem;
+}
+
+.lang-toggle {
+  padding: 0.35rem 0.75rem;
+  border: 1px solid #2c3a52;
+  border-radius: 8px;
+  background: #16213a;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.lang-toggle:hover {
+  color: #fff;
+  border-color: #3b82f6;
 }
 
 .subtitle {

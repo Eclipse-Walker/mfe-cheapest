@@ -38,4 +38,9 @@ describe('formatUnitPrice', () => {
     expect(formatUnitPrice(2.5, 'mass')).toBe('2.50 บาท/g');
     expect(formatUnitPrice(10, 'count')).toBe('10.00 บาท/ชิ้น');
   });
+
+  it('ภาษาอังกฤษ', () => {
+    expect(formatUnitPrice(0.09, 'mass', 'en')).toBe('9.00 THB/100g');
+    expect(formatUnitPrice(10, 'count', 'en')).toBe('10.00 THB/pcs');
+  });
 });
