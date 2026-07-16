@@ -276,8 +276,9 @@ h2 {
 
 .item-name {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.15rem 0.5rem;
   font-weight: 600;
   font-size: 0.95rem;
 }
@@ -381,7 +382,21 @@ h2 {
 .footer {
   margin-top: 3rem;
   text-align: center;
+  white-space: nowrap;
   font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   font-size: 0.75rem;
   color: var(--muted);
+}
+
+/* ponytail: breakpoints picked to keep the comment on one line down to a 320px-wide phone — measured against actual text width, not guessed */
+@media (max-width: 480px) {
+  .footer {
+    font-size: 0.625rem;
+  }
+}
+
+@media (max-width: 350px) {
+  .footer {
+    font-size: 0.5rem;
+  }
 }

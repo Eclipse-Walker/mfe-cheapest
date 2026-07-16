@@ -197,7 +197,8 @@ const App = () => {
                 <div className="item-main">
                   <span className="item-name">{entry.name}</span>
                   <span className="item-detail">
-                    {thb.format(entry.price)} / {entry.qty}{' '}
+                    {thb.format(entry.price)} / {entry.qty}
+                    {' '}
                     {t.units[entry.unit]}
                   </span>
                   <span className="history-date">
@@ -289,7 +290,9 @@ const App = () => {
                             )}
                           </span>
                           <span className="item-detail">
-                            {thb.format(it.price)} / {it.qty} {t.units[it.unit]}
+                            {thb.format(it.price)} / {it.qty}
+                            {' '}
+                            {t.units[it.unit]}
                           </span>
                         </div>
                         <div className="item-price">
