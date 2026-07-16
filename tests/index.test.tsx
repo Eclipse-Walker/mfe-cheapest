@@ -5,5 +5,5 @@ import App from '../src/App';
 test('renders the main page', () => {
   localStorage.setItem('lang', 'th');
   render(<App />);
-  expect(screen.getByText('🛒 อันไหนถูกสุด?')).toBeInTheDocument();
+  expect(screen.getByText('อันไหนถูกสุด?')).toBeInTheDocument();
 });

@@ -5,14 +5,14 @@ export type Lang = 'th' | 'en';
 // ponytail: object ธรรมดาแทน i18n library — เพิ่มภาษาใหม่คือเพิ่ม key เดียว
 export const MESSAGES = {
   th: {
-    title: '🛒 อันไหนถูกสุด?',
+    title: 'อันไหนถูกสุด?',
     subtitle: 'กรอกราคาและปริมาณ แล้วดูว่าชิ้นไหนคุ้มค่าที่สุด',
     namePlaceholder: 'ชื่อสินค้า (ไม่ใส่ก็ได้)',
     pricePlaceholder: 'ราคา (บาท)',
     qtyPlaceholder: 'ปริมาณ',
     add: 'เพิ่ม',
     empty: 'ยังไม่มีสินค้า — ลองเพิ่มสัก 2 ชิ้นเพื่อเปรียบเทียบ',
-    best: '🏆 คุ้มสุด',
+    best: 'คุ้มสุด',
     clearAll: 'ล้างทั้งหมด',
     baht: 'บาท',
     autoName: (n: number) => `สินค้า #${n}`,
@@ -33,14 +33,14 @@ export const MESSAGES = {
     locale: 'th-TH',
   },
   en: {
-    title: '🛒 Which is cheapest?',
+    title: 'Which is cheapest?',
     subtitle: 'Enter price and quantity to see which item is the best value',
     namePlaceholder: 'Product name (optional)',
     pricePlaceholder: 'Price (THB)',
     qtyPlaceholder: 'Quantity',
     add: 'Add',
     empty: 'No items yet — add 2 or more to compare',
-    best: '🏆 Best value',
+    best: 'Best value',
     clearAll: 'Clear all',
     baht: 'THB',
     autoName: (n: number) => `Item #${n}`,
