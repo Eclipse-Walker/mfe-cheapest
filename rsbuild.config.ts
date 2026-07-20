@@ -18,7 +18,9 @@ export default defineConfig({
       viewport: 'width=device-width, initial-scale=1, viewport-fit=cover',
       'theme-color': '#0d0d0d',
       'apple-mobile-web-app-capable': 'yes',
-      'apple-mobile-web-app-status-bar-style': 'black-translucent',
+      // default = iOS เลือกสีตัวหนังสือ status bar ตาม theme-color อัตโนมัติ
+      // (black-translucent บังคับตัวหนังสือขาวเสมอ ทำให้กลืนกับพื้นหลัง light theme)
+      'apple-mobile-web-app-status-bar-style': 'default',
     },
     tags: [
       {
