@@ -11,9 +11,13 @@ export const UNITS: Record<Unit, { dim: Dimension; factor: number }> = {
   piece: { dim: 'count', factor: 1 },
 };
 
-/** ราคาต่อหน่วยฐาน (บาท/g, บาท/ml, บาท/ชิ้น) */
-export const unitPrice = (price: number, qty: number, unit: Unit): number =>
-  price / (qty * UNITS[unit].factor);
+/** ราคาต่อหน่วยฐาน (บาท/g, บาท/ml, บาท/ชิ้น) — count = จำนวนกล่อง/ชิ้นต่อแพ็ค */
+export const unitPrice = (
+  price: number,
+  qty: number,
+  unit: Unit,
+  count = 1,
+): number => price / (qty * count * UNITS[unit].factor);
 
 /** ราคาต่อหน่วยแบบอ่านง่าย — ขยายเป็น /100g, /L ฯลฯ ถ้าตัวเลขเล็กเกิน */
 export const formatUnitPrice = (

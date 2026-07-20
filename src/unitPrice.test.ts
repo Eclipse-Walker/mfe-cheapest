@@ -18,6 +18,20 @@ describe('unitPrice', () => {
     expect(unitPrice(120, 12, 'piece')).toBe(10);
   });
 
+  it('แพ็ค: 42บ/แพ็ค 3 กล่อง × 180ml = ราคาต่อ ml จากปริมาณรวม 540ml', () => {
+    expect(unitPrice(42, 180, 'ml', 3)).toBeCloseTo(42 / 540);
+  });
+
+  it('เทียบนมสองแพ็ค: 60บ/4×225ml ถูกกว่า 42บ/3×180ml', () => {
+    expect(unitPrice(60, 225, 'ml', 4)).toBeLessThan(
+      unitPrice(42, 180, 'ml', 3),
+    );
+  });
+
+  it('ไม่ส่ง count หรือส่ง undefined = 1 (ของเก่าใน localStorage)', () => {
+    expect(unitPrice(50, 1, 'l', undefined)).toBe(unitPrice(50, 1, 'l'));
+  });
+
   it('dimension ต่างกันไม่ปนกัน', () => {
     expect(UNITS.g.dim).not.toBe(UNITS.ml.dim);
     expect(UNITS.kg.dim).toBe(UNITS.g.dim);

@@ -127,7 +127,12 @@ h1 {
 
 @media (min-width: 640px) {
   .form-fields {
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  /* ชื่อสินค้าเต็มแถวบน — 4 ช่องแถวเดียวแคบจน placeholder โดนตัด */
+  .form-fields input[name="name"] {
+    grid-column: 1 / -1;
   }
 }
 

@@ -9,6 +9,8 @@ type Item = {
   price: number;
   qty: number;
   unit: Unit;
+  // ponytail: จำนวนต่อแพ็ค — undefined = 1, ของเก่าใน localStorage ไม่มี field นี้
+  count?: number;
 };
 
 type HistoryEntry = Item & { archivedAt: number };
@@ -137,6 +139,7 @@ const App = () => {
         price: Number(data.get('price')),
         qty: Number(data.get('qty')),
         unit: data.get('unit') as Unit,
+        count: Number(data.get('count')) || 1,
       },
     ]);
     form.reset();
@@ -149,8 +152,8 @@ const App = () => {
         .filter((it) => UNITS[it.unit].dim === dim)
         .sort(
           (a, b) =>
-            unitPrice(a.price, a.qty, a.unit) -
-            unitPrice(b.price, b.qty, b.unit),
+            unitPrice(a.price, a.qty, a.unit, a.count) -
+            unitPrice(b.price, b.qty, b.unit, b.count),
         ),
     }))
     .filter((g) => g.items.length > 0);
@@ -190,14 +193,21 @@ const App = () => {
         <ul className="item-list history-list">
           {history.length === 0 && <p className="empty">{t.historyEmpty}</p>}
           {history.map((entry) => {
-            const per = unitPrice(entry.price, entry.qty, entry.unit);
+            const per = unitPrice(
+              entry.price,
+              entry.qty,
+              entry.unit,
+              entry.count,
+            );
             const dim = UNITS[entry.unit].dim;
             return (
               <li key={`${entry.id}-${entry.archivedAt}`} className="item">
                 <div className="item-main">
                   <span className="item-name">{entry.name}</span>
                   <span className="item-detail">
-                    {thb.format(entry.price)} / {entry.qty}
+                    {thb.format(entry.price)} /{' '}
+                    {(entry.count ?? 1) > 1 ? `${entry.count} × ` : ''}
+                    {entry.qty}
                     {' '}
                     {t.units[entry.unit]}
                   </span>
@@ -244,6 +254,14 @@ const App = () => {
                 min="0.001"
                 step="any"
               />
+              <input
+                name="count"
+                type="number"
+                inputMode="numeric"
+                placeholder={t.countPlaceholder}
+                min="1"
+                step="1"
+              />
             </div>
             <div className="form-actions">
               <div className="unit-picker">
@@ -270,13 +288,14 @@ const App = () => {
               group.items[0].price,
               group.items[0].qty,
               group.items[0].unit,
+              group.items[0].count,
             );
             return (
               <section key={group.dim}>
                 <h2>{t.dims[group.dim]}</h2>
                 <ul className="item-list">
                   {group.items.map((it) => {
-                    const per = unitPrice(it.price, it.qty, it.unit);
+                    const per = unitPrice(it.price, it.qty, it.unit, it.count);
                     const pctMore = ((per - best) / best) * 100;
                     // ponytail: เทียบตามค่าที่ปัดแล้วเห็นเท่ากัน ไม่ใช่ index แรกของ sort — กันกรณีราคาเท่ากันแต่ badge ลงผิดตัว
                     const isBest = Math.round(pctMore) <= 0;
@@ -290,7 +309,9 @@ const App = () => {
                             )}
                           </span>
                           <span className="item-detail">
-                            {thb.format(it.price)} / {it.qty}
+                            {thb.format(it.price)} /{' '}
+                            {(it.count ?? 1) > 1 ? `${it.count} × ` : ''}
+                            {it.qty}
                             {' '}
                             {t.units[it.unit]}
                           </span>
